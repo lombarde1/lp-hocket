@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hocketzap-landing
+    container_name: hocketzap-landing
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - network_public
+
+networks:
+  network_public:
+    driver: bridge
