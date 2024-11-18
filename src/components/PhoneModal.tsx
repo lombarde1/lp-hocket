@@ -1,10 +1,24 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { FaDollarSign } from 'react-icons/fa';
 import { WifiHigh, Battery, Signal, Camera, Flashlight } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-const NotificationItem = ({ message, isNew }) => (
+// Definindo nossa própria interface para notificações
+interface CustomNotification {
+  id: number;
+  message: string;
+  isNew: boolean;
+}
+
+interface NotificationItemProps {
+  message: string;
+  isNew: boolean;
+}
+
+const NotificationItem: React.FC<NotificationItemProps> = ({ message }) => (
   <div className="bg-white/90 backdrop-blur-md p-3 rounded-xl shadow-sm mb-3 flex items-center animate-in slide-in-from-bottom duration-300">
     <div className="bg-emerald-500 p-1.5 rounded-lg mr-3">
       <FaDollarSign className="text-white text-sm" />
@@ -18,29 +32,26 @@ const NotificationItem = ({ message, isNew }) => (
 
 const PhoneModal = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<CustomNotification[]>([]);
 
-  // Atualiza o tempo a cada segundo
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Gera notificações mais rapidamente (a cada 1.5 segundos)
   useEffect(() => {
     const addNotification = () => {
-      const newNotification = {
+      const newNotification: CustomNotification = {
         id: Date.now(),
         message: `R$ ${(Math.random() * 1000).toFixed(2)}`,
         isNew: true
       };
       setNotifications(prev => [newNotification, ...prev.slice(0, 3)]);
     };
-    const timer = setInterval(addNotification, 1500); // Reduzido para 1.5 segundos
+    const timer = setInterval(addNotification, 1500);
     return () => clearInterval(timer);
   }, []);
 
-  // Formata a data atual
   const formattedDate = format(currentTime, "EEEE',' d 'de' MMMM", { locale: ptBR });
   const formattedTime = format(currentTime, "HH:mm");
 
@@ -49,7 +60,7 @@ const PhoneModal = () => {
       <div className="relative w-[240px] h-[500px]">
         <div className="absolute inset-0 bg-[#1A1A1A] rounded-[45px] shadow-xl">
           <div className="absolute inset-[2px] bg-black rounded-[43px] overflow-hidden">
-            {/* Status Bar */} 
+            {/* Status Bar */}
             <div className="absolute top-0 w-full px-8 pt-4.0 flex justify-between items-center z-20">
               <div className="flex items-center gap-1">
                 <Signal className="w-4 h-4 text-white" strokeWidth={3} />
@@ -90,7 +101,7 @@ const PhoneModal = () => {
                 {notifications.map((notif, index) => (
                   <NotificationItem 
                     key={notif.id} 
-                    {...notif}
+                    message={notif.message}
                     isNew={index === 0}
                   />
                 ))}

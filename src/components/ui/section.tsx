@@ -1,4 +1,5 @@
 // components/ui/section.tsx
+'use client';
 import { cn } from "@/lib/utils"
 
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {
