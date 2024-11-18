@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import PhoneModal from './PhoneModal';
 import { VideoDialog } from '@/components/ui/video-dialog';
 import { 
   ArrowRight, 
@@ -160,52 +161,18 @@ export default function Hero() {
                 </motion.div>
               </div>
             </motion.div>
-
-            {/* Right Column */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+  {/* Right Column - Phone Modal */}
+  <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="relative lg:ml-4"
+              className="relative z-10 hidden lg:block"
             >
-              {/* Feature badges floating around the main image */}
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + (index * 0.2) }}
-                  className={`absolute ${getPosition(index)} z-20`}
-                >
-                  <div className="bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3 hover:scale-105 transition-transform cursor-pointer">
-                    <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
-                      {feature.icon}
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold">{feature.title}</div>
-                      <div className="text-xs text-gray-500">{feature.subtitle}</div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-
-              {/* Main Image */}
-              <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-400 shadow-2xl">
-                <div className="absolute inset-0 bg-grid-white/15" />
-                <Image
-                  src="https://raw.githubusercontent.com/ttshopia32/uploads/main/image/38d3facd-a0ce-49f7-8ef3-c1b10fa6130f.jpg"
-                  alt="Dashboard Preview"
-                  className="w-full h-auto relative z-10 rounded-xl shadow-inner transform hover:scale-105 transition-transform duration-300"
-                />
-
-                {/* Security Badge */}
-                <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-emerald-600" />
-                  <span className="text-xs font-medium text-gray-800">Dados criptografados e seguros</span>
-                </div>
-              </div>
+              <PhoneModal />
             </motion.div>
+           
           </div>
+          
         </div>
       </div>
 
